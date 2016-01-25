@@ -1,0 +1,15 @@
+
+<ul>
+  <li ng-repeat="item in items">
+    <span>{{item.name}}</span>
+    <span>{{item.price}} SEK</span>
+    <a id="link-1" href ng-click="addToCart({{item}})">Add</a>
+  </li>
+  </ul>
+cart:
+  <ul>
+  <li ng-repeat="cartItem in cart track by $index">
+    <span>{{cartItem.name}}</span>
+  </li>
+  </ul>
+

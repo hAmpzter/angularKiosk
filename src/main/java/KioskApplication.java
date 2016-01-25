@@ -1,3 +1,4 @@
+import Resources.PurchaseResource;
 import Resources.StockResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
@@ -18,10 +19,12 @@ public class KioskApplication extends Application<KioskConfiguration> {
         FilterRegistration.Dynamic filter = environment.servlets().addFilter("CORSFilter", CrossOriginFilter.class);
 
         filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, environment.getApplicationContext().getContextPath() + "*");
-        filter.setInitParameter(ALLOWED_METHODS_PARAM, "GET,PUT,POST,OPTIONS");
+        filter.setInitParameter(ALLOWED_METHODS_PARAM, "GET,PUT,DELETE,POST,OPTIONS");
         filter.setInitParameter(ALLOWED_HEADERS_PARAM, "Origin, Content-Type, Accept");
         filter.setInitParameter(ALLOW_CREDENTIALS_PARAM, "true");
         final StockResource stockResource = new StockResource();
+
         environment.jersey().register(stockResource);
+        environment.jersey().register(new PurchaseResource());
     }
 }

@@ -12,7 +12,7 @@ angular.module('webApp')
     $scope.cart = [];
     $http.get('http://localhost:8280/stock').then(
       function successCallback(response) {
-        $scope.items=response.data
+        $scope.items=response.data;
       },
       function errorCallback(response) {
         console.log('error');
@@ -23,4 +23,65 @@ angular.module('webApp')
     console.log("called with: "+item);
       $scope.cart.push(item);
     };
+
+    $scope.purchase = function() {
+     $http.post('http://localhost:8280/purchase', {items: $scope.cart}).then(
+         function successCallback(response) {
+             $scope.cart = [];
+             console.log(response);
+              $scope.message = "purchase complete";
+           },
+           function errorCallback(response) {
+             console.log('error');
+             console.log(response);
+             $scope.message= "purchase error";
+           });
+    };
+ $scope.removeFromPurchase = function(purchaseId, itemId) {
+     $http.delete('http://localhost:8280/purchase/'+purchaseId+"/"+itemId).then(
+         function successCallback(response) {
+             $scope.cart = [];
+             console.log(response);
+              $scope.message = "removed item";
+           },
+           function errorCallback(response) {
+             console.log('error');
+             console.log(response);
+             $scope.message= "error while removing item";
+           });
+    };
+
+    $scope.removePurchase = function(purchaseId) {
+     $http.delete('http://localhost:8280/purchase/'+purchaseId).then(
+         function successCallback(response) {
+             $scope.cart = [];
+             console.log(response);
+              $scope.message = "removed purchase";
+           },
+           function errorCallback(response) {
+             console.log('error');
+             console.log(response);
+             $scope.message= "error while removing purchase";
+           });
+    };
+
+   $http.get('http://localhost:8280/stock/categories').then(
+         function successCallback(response) {
+           $scope.categories=response.data;
+         },
+         function errorCallback(response) {
+           $scope.categories=[]
+           console.log('error');
+           console.log(response);
+         });
+
+   $http.get('http://localhost:8280/purchase/history').then(
+         function successCallback(response) {
+           $scope.history=response.data;
+         },
+         function errorCallback(response) {
+           $scope.history=[]
+           console.log('error');
+           console.log(response);
+         });
   }]);

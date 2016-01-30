@@ -12,7 +12,7 @@ angular.module('webApp')
     $scope.cart = [];
     $http.get('http://localhost:8280/stock').then(
       function successCallback(response) {
-        $scope.items=response.data
+        $scope.items=response.data;
       },
       function errorCallback(response) {
         console.log('error');
@@ -23,7 +23,6 @@ angular.module('webApp')
     console.log('called with: '+item);
       $scope.cart.push(item);
     };
-<<<<<<< HEAD
 
     $scope.purchase = function() {
      $http.post('http://localhost:8280/purchase', {items: $scope.cart}).then(
@@ -79,6 +78,4 @@ angular.module('webApp')
            console.log('error');
            console.log(response);
          });
-=======
->>>>>>> parent of 61ce471... added more functionality
   }]);

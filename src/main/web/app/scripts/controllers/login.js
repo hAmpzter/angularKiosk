@@ -10,9 +10,9 @@
 angular.module('webApp')
 .config(function Config($httpProvider, jwtInterceptorProvider) {
   jwtInterceptorProvider.tokenGetter = function() {
-    var item = localStorage.getItem('jwt')
-    if(item!=null) {
-      return item.replace(/"/g, "");
+    var item = localStorage.getItem('jwt');
+    if(item!==null) {
+      return item.replace(/"/g, '');
     }
     return null;
   };

@@ -12,7 +12,7 @@ angular.module('webApp')
     $scope.cart = [];
     $http.get('http://localhost:8280/stock').then(
       function successCallback(response) {
-        $scope.items=response.data;
+        $scope.items=response.data
       },
       function errorCallback(response) {
         console.log('error');
@@ -20,34 +20,31 @@ angular.module('webApp')
       });
 
     $scope.addToCart = function(item) {
-    console.log("called with: "+item);
+    console.log('called with: '+item);
       $scope.cart.push(item);
     };
+<<<<<<< HEAD
 
     $scope.purchase = function() {
      $http.post('http://localhost:8280/purchase', {items: $scope.cart}).then(
          function successCallback(response) {
              $scope.cart = [];
              console.log(response);
-              $scope.message = "purchase complete";
            },
            function errorCallback(response) {
              console.log('error');
              console.log(response);
-             $scope.message= "purchase error";
            });
     };
  $scope.removeFromPurchase = function(purchaseId, itemId) {
-     $http.delete('http://localhost:8280/purchase/'+purchaseId+"/"+itemId).then(
+     $http.delete('http://localhost:8280/purchase/'+purchaseId+'/'+itemId).then(
          function successCallback(response) {
              $scope.cart = [];
              console.log(response);
-              $scope.message = "removed item";
            },
            function errorCallback(response) {
              console.log('error');
              console.log(response);
-             $scope.message= "error while removing item";
            });
     };
 
@@ -56,12 +53,10 @@ angular.module('webApp')
          function successCallback(response) {
              $scope.cart = [];
              console.log(response);
-              $scope.message = "removed purchase";
            },
            function errorCallback(response) {
              console.log('error');
              console.log(response);
-             $scope.message= "error while removing purchase";
            });
     };
 
@@ -70,7 +65,7 @@ angular.module('webApp')
            $scope.categories=response.data;
          },
          function errorCallback(response) {
-           $scope.categories=[]
+           $scope.categories=[];
            console.log('error');
            console.log(response);
          });
@@ -80,8 +75,10 @@ angular.module('webApp')
            $scope.history=response.data;
          },
          function errorCallback(response) {
-           $scope.history=[]
+           $scope.history=[];
            console.log('error');
            console.log(response);
          });
+=======
+>>>>>>> parent of 61ce471... added more functionality
   }]);

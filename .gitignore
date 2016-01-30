@@ -7,3 +7,5 @@ dist
 .sass-cache
 bower_components
 *.iml
+deploy.yml
+src/deploy.yml

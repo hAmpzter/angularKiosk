@@ -16,7 +16,7 @@ cart:
 categories:
 <ul>
   <li ng-repeat="category in categories">
-    <span>{{category.name}}</span>
+    <span> <a href ng-click="stockForCategory('{{category.name}}')">{{category.name}}</a></span>
   </li>
 </ul>
 

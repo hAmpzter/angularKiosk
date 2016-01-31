@@ -9,6 +9,7 @@ import model.StockItem;
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -28,13 +29,18 @@ public class StockResource {
     @GET
     public List<StockItem> getCurrentStock() {
         return stockDAO.getStock();
-
     }
 
     @GET
     @Path("/categories")
     public List<Category> getCategories() {
         return stockDAO.getCategories();
+
+    }
+    @GET
+    @Path("/categories/{category}/stock")
+    public List<StockItem> getCategories(@PathParam("category") String category) {
+        return stockDAO.getStock(category);
 
     }
 

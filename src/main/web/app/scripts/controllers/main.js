@@ -23,8 +23,20 @@ angular.module('webApp')
     console.log('called with: '+item);
       $scope.cart.push(item);
     };
+  $scope.stockForCategory = function(category) {
+    $http.get('http://localhost:8280/stock/categories/'+category+'/stock').then(
+        function successCallback(response) {
+          $scope.items=response.data;
+        },
+        function errorCallback(response) {
+          console.log('error');
+          console.log(response);
+        });
 
-    $scope.purchase = function() {
+
+  }
+
+  $scope.purchase = function() {
      $http.post('http://localhost:8280/purchase', {items: $scope.cart}).then(
          function successCallback(response) {
              $scope.cart = [];

@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import Resources.LoginResource;
 import Resources.PurchaseResource;
-=======
->>>>>>> parent of 61ce471... added more functionality
 import Resources.StockResource;
 import auth.KioskAuthenticator;
 import com.github.toastshaman.dropwizard.auth.jwt.JWTAuthFilter;
@@ -63,17 +60,12 @@ public class KioskApplication extends Application<KioskConfiguration> {
         FilterRegistration.Dynamic filter = environment.servlets().addFilter("CORSFilter", CrossOriginFilter.class);
 
         filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, environment.getApplicationContext().getContextPath() + "*");
-<<<<<<< HEAD
         filter.setInitParameter(ALLOWED_METHODS_PARAM, "GET,PUT,DELETE,POST,OPTIONS");
         filter.setInitParameter(ALLOWED_HEADERS_PARAM, "Origin, Content-Type, Accept, jwt, Authorization");
         filter.setInitParameter(ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, "http://localhost:9000");
         filter.setInitParameter(ALLOW_CREDENTIALS_PARAM, "true");
-=======
         filter.setInitParameter(ALLOWED_METHODS_PARAM, "GET,PUT,POST,OPTIONS");
         filter.setInitParameter(ALLOWED_HEADERS_PARAM, "Origin, Content-Type, Accept");
         filter.setInitParameter(ALLOW_CREDENTIALS_PARAM, "true");
-        final StockResource stockResource = new StockResource();
-        environment.jersey().register(stockResource);
->>>>>>> parent of 61ce471... added more functionality
     }
 }

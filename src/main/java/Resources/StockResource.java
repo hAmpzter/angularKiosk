@@ -2,11 +2,8 @@ package Resources;
 
 
 import com.google.common.collect.Lists;
-<<<<<<< HEAD
 import jdbi.StockDAO;
 import model.Category;
-=======
->>>>>>> parent of 61ce471... added more functionality
 import model.StockItem;
 
 import javax.annotation.security.PermitAll;
@@ -22,25 +19,17 @@ import java.util.List;
 public class StockResource {
 
 
-<<<<<<< HEAD
     private StockDAO stockDAO;
 
     public StockResource(StockDAO stockDAO) {
         this.stockDAO = stockDAO;
     }
-=======
-    public StockResource() {
-}
->>>>>>> parent of 61ce471... added more functionality
 
     @GET
     public List<StockItem> getCurrentStock() {
         return stockDAO.getStock();
-        //StockItem stockItem = new StockItem("Cola", 5, "1234", 12, "Soda");
-        //return Lists.newArrayList(stockItem);
 
     }
-<<<<<<< HEAD
 
     @GET
     @Path("/categories")
@@ -48,6 +37,5 @@ public class StockResource {
         return stockDAO.getCategories();
 
     }
-=======
->>>>>>> parent of 61ce471... added more functionality
+
 }

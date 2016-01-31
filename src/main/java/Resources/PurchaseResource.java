@@ -1,31 +1,19 @@
 package Resources;
 
-<<<<<<< HEAD
-import com.google.common.collect.Lists;
 import jdbi.PurchaseDao;
-import model.CompletedPurchase;
-=======
->>>>>>> parent of 61ce471... added more functionality
 import model.Purchase;
+import model.PurchasedItem;
 
-<<<<<<< HEAD
-import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
-=======
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
->>>>>>> parent of 61ce471... added more functionality
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/purchase")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PurchaseResource {
 
-<<<<<<< HEAD
     PurchaseDao purchaseDao;
 
     public PurchaseResource(PurchaseDao purchaseDao) {
@@ -34,15 +22,8 @@ public class PurchaseResource {
 
     @POST
     public Response purchase(Purchase purchase) {
-=======
->>>>>>> parent of 61ce471... added more functionality
-
-
-    @POST
-    public Response purchase(Purchase purchase) {
         return Response.status(Response.Status.CREATED).build();
     }
-<<<<<<< HEAD
 
     @GET
     @Path("/history")
@@ -64,6 +45,4 @@ public class PurchaseResource {
         System.out.println("item removed from purchase:"+ itemId);
         return Response.ok().build();
     }
-=======
->>>>>>> parent of 61ce471... added more functionality
 }

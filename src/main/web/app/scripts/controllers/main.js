@@ -9,7 +9,17 @@
  */
 angular.module('webApp')
   .controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
-    $scope.cart = [];
+    $scope.cart = {};
+    $scope.sum = function() {
+      var sum =0;
+      for (var index in $scope.cart) {
+          var item = $scope.cart[index];
+          console.log(item);
+          sum+=item.count*item.item.price;
+      }
+      return sum;
+    };
+
     $http.get('http://localhost:8280/stock').then(
       function successCallback(response) {
         $scope.items=response.data;
@@ -21,7 +31,12 @@ angular.module('webApp')
 
     $scope.addToCart = function(item) {
       console.log('called with: '+item);
-        $scope.cart.push(item);
+        var ean = ''+item.ean;
+        if($scope.cart[ean]) {
+          $scope.cart[ean].count++;
+        } else {
+          $scope.cart[ean]= {item: item, count: 1};
+        }
     };
     $scope.stockForCategory = function(category) {
       $http.get('http://localhost:8280/stock/categories/'+category+'/stock').then(
@@ -32,9 +47,7 @@ angular.module('webApp')
             console.log('error');
             console.log(response);
           });
-
-
-    }
+    };
 
     $scope.purchase = function() {
        $http.post('http://localhost:8280/purchase', {items: $scope.cart}).then(

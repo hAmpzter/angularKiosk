@@ -13,11 +13,11 @@ import java.util.List;
 public interface StockDAO  {
 
     @Mapper(StockItemMapper.class)
-    @SqlQuery("select ProduktNamn,ProduktPris,ProduktEAN,ProduktKategori FROM Produkter")
+    @SqlQuery("select ProduktID,ProduktNamn,ProduktPris,ProduktEAN,ProduktKategori FROM Produkter")
     List<StockItem> getStock();
 
     @Mapper(StockItemMapper.class)
-    @SqlQuery("select ProduktNamn,ProduktPris,ProduktEAN,ProduktKategori FROM Produkter where ProduktKategori = :category")
+    @SqlQuery("select ProduktID,ProduktNamn,ProduktPris,ProduktEAN,ProduktKategori FROM Produkter where ProduktKategori = :category")
     List<StockItem> getStock(@Bind("category") String category);
 
     @Mapper(CategoryMapper.class)

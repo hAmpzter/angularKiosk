@@ -17,14 +17,14 @@
   </div>
   <div class="col-md-4">
     <div class="row">
-      <h1 class="text-right">235 KR</h1>
+      <h1 class="text-right">{{ sum() }} KR</h1>
     </div>
     <div class="row">
       <table class="table">
-        <tr ng-repeat="cartItem in cart track by $index">
-          <td>{{cartItem.name}}</td>
+        <tr ng-repeat="(key,cartItem) in cart">
+          <td>{{cartItem.item.name}}</td>
           <td><button class="btn btn-danger">-</button></td>
-          <td>2</td>
+          <td>{{cartItem.count}}</td>
           <td><button class="btn btn-success">+</button></td>
         </tr>
       </table>

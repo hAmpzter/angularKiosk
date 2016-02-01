@@ -14,6 +14,7 @@ import jdbi.PurchaseDao;
 import jdbi.StockDAO;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.skife.jdbi.v2.DBI;
+import org.skife.jdbi.v2.Handle;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
@@ -32,14 +33,14 @@ public class KioskApplication extends Application<KioskConfiguration> {
 
 
         final DBIFactory factory = new DBIFactory();
-        final DBI jdbi = factory.build(environment, config.getDataSourceFactory(), "postgresql");
+        final DBI jdbi = factory.build(environment, config.getDataSourceFactory(), "mssql");
         StockDAO stockDAO = jdbi.onDemand(StockDAO.class);
         PurchaseDao purchaseDao = jdbi.onDemand(PurchaseDao.class);
         environment.jersey().register(new StockResource(stockDAO));
         environment.jersey().register(new PurchaseResource(purchaseDao));
         environment.jersey().register(new LoginResource(config.getJwtTokenSecret()));
 
-
+        Handle h = jdbi.open();
         addAuthFilter(environment, config);
     }
 

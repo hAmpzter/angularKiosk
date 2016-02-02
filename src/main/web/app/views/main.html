@@ -23,9 +23,9 @@
       <table class="table">
         <tr ng-repeat="(key,cartItem) in cart">
           <td>{{cartItem.item.name}}</td>
-          <td><button class="btn btn-danger">-</button></td>
+          <td><button class="btn btn-danger" ng-click="decreaseItemCount({{cartItem.item.ean}})">-</button></td>
           <td>{{cartItem.count}}</td>
-          <td><button class="btn btn-success">+</button></td>
+          <td><button class="btn btn-success" ng-click="increaseItemCount({{cartItem.item.ean}})">+</button></td>
         </tr>
       </table>
 

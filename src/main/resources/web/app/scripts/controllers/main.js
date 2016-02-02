@@ -41,10 +41,10 @@ angular.module('webApp')
 
     $scope.increaseItemCount = function(ean) {
       $scope.cart[ean].count++;
-    }
+    };
         $scope.decreaseItemCount = function(ean) {
       $scope.cart[ean].count--;
-    }
+    };
 
     $scope.stockForCategory = function(category) {
       $http.get('http://localhost:8280/stock/categories/'+category+'/stock').then(

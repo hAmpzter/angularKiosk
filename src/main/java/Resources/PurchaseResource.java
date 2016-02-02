@@ -22,6 +22,8 @@ public class PurchaseResource {
 
     @POST
     public Response purchase(Purchase purchase) {
+
+
         return Response.status(Response.Status.CREATED).build();
     }
 

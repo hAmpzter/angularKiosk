@@ -7,8 +7,10 @@ import com.github.toastshaman.dropwizard.auth.jwt.JsonWebTokenParser;
 import com.github.toastshaman.dropwizard.auth.jwt.hmac.HmacSHA512Verifier;
 import com.github.toastshaman.dropwizard.auth.jwt.parser.DefaultJsonWebTokenParser;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import jdbi.PurchaseDao;
 import jdbi.StockDAO;
@@ -26,7 +28,10 @@ public class KioskApplication extends Application<KioskConfiguration> {
     public static void main(String[] args) throws Exception {
         new KioskApplication().run(args);
     }
-
+    @Override
+    public void initialize(Bootstrap<KioskConfiguration> bootstrap) {
+        bootstrap.addBundle(new AssetsBundle("/web", "/static/"));
+    }
     @Override
     public void run(KioskConfiguration config, Environment environment) throws Exception {
         enableCORS(environment);
@@ -40,8 +45,8 @@ public class KioskApplication extends Application<KioskConfiguration> {
         environment.jersey().register(new PurchaseResource(purchaseDao));
         environment.jersey().register(new LoginResource(config.getJwtTokenSecret()));
 
-        Handle h = jdbi.open();
         addAuthFilter(environment, config);
+
     }
 
     private void addAuthFilter(Environment environment, KioskConfiguration configuration) {

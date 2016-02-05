@@ -12,6 +12,7 @@ import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import jdbi.LoginDao;
 import jdbi.PurchaseDao;
 import jdbi.StockDAO;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
@@ -30,7 +31,7 @@ public class KioskApplication extends Application<KioskConfiguration> {
     }
     @Override
     public void initialize(Bootstrap<KioskConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/web", "/static/"));
+        bootstrap.addBundle(new AssetsBundle("/web/dist", "/static/"));
     }
     @Override
     public void run(KioskConfiguration config, Environment environment) throws Exception {
@@ -41,9 +42,11 @@ public class KioskApplication extends Application<KioskConfiguration> {
         final DBI jdbi = factory.build(environment, config.getDataSourceFactory(), "mssql");
         StockDAO stockDAO = jdbi.onDemand(StockDAO.class);
         PurchaseDao purchaseDao = jdbi.onDemand(PurchaseDao.class);
+        LoginDao loginDao = jdbi.onDemand(LoginDao.class);
+
         environment.jersey().register(new StockResource(stockDAO));
         environment.jersey().register(new PurchaseResource(purchaseDao));
-        environment.jersey().register(new LoginResource(config.getJwtTokenSecret()));
+        environment.jersey().register(new LoginResource(config.getJwtTokenSecret(), loginDao));
 
         addAuthFilter(environment, config);
 

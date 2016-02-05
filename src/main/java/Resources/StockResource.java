@@ -27,17 +27,20 @@ public class StockResource {
     }
 
     @GET
+    @PermitAll
     public List<StockItem> getCurrentStock() {
         return stockDAO.getStock();
     }
 
     @GET
+    @PermitAll
     @Path("/categories")
     public List<Category> getCategories() {
         return stockDAO.getCategories();
 
     }
     @GET
+    @PermitAll
     @Path("/categories/{category}/stock")
     public List<StockItem> getCategories(@PathParam("category") String category) {
         return stockDAO.getStock(category);

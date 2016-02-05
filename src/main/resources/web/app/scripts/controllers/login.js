@@ -18,24 +18,20 @@ angular.module('webApp')
   };
 
   $httpProvider.interceptors.push('jwtInterceptor');
-}).controller('LoginCtrl', ['$scope','store', '$http', function($scope,store, $http) {
+}).controller('LoginCtrl', ['$scope','store', '$http', '$location', '$timeout', function($scope,store, $http, $location, $timeout) {
     $scope.login = [];
+    $scope.loginAlertMessage = '';
     $scope.doLogin = function() {
         $http.post('http://localhost:8280/login', {username: $scope.username, password: $scope.password}).then(
                  function successCallback(response) {
                      store.set('jwt', response.data.token);
-                       console.log(response);
+                     $location.path('/');
                    },
                    function errorCallback(response) {
+                     $scope.loginAlertMessage = 'invalid username or password';
+                     $timeout(function () { $scope.loginAlertMessage = ''; }, 5000);
                      console.log(response);
                    });
          };
-
-    $scope.isLoggedin = function() {
-      $http.get('http://localhost:8280/login/with-permit');
-    };
-    $scope.noLogin = function() {
-      $http.get('http://localhost:8280/login/no-permit');
-    };
     }
   ]);

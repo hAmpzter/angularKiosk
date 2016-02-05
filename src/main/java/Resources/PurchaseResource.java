@@ -4,6 +4,7 @@ import jdbi.PurchaseDao;
 import model.Purchase;
 import model.PurchasedItem;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,6 +22,7 @@ public class PurchaseResource {
     }
 
     @POST
+    @PermitAll
     public Response purchase(Purchase purchase) {
 
 
@@ -28,6 +30,7 @@ public class PurchaseResource {
     }
 
     @GET
+    @PermitAll
     @Path("/history")
     public List<PurchasedItem> getPurchases() {
 
@@ -36,12 +39,14 @@ public class PurchaseResource {
     }
 
     @DELETE
+    @PermitAll
     @Path("/{purchaseId}")
     public Response deletePurchase(@PathParam("purchaseId") String purchaseId) {
         System.out.println("purchase with id deleted:"+ purchaseId);
         return Response.ok().build();
     }
     @DELETE
+    @PermitAll
     @Path("/{purchaseId}/{itemId}")
     public Response deletePurchase(@PathParam("purchaseId") String purchaseId, @PathParam("itemId") String itemId) {
         System.out.println("item removed from purchase:"+ itemId);

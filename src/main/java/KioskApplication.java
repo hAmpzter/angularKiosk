@@ -2,13 +2,17 @@ import Resources.LoginResource;
 import Resources.PurchaseResource;
 import Resources.StockResource;
 import auth.KioskAuthenticator;
+import com.codahale.metrics.MetricRegistry;
 import com.github.toastshaman.dropwizard.auth.jwt.JWTAuthFilter;
 import com.github.toastshaman.dropwizard.auth.jwt.JsonWebTokenParser;
 import com.github.toastshaman.dropwizard.auth.jwt.hmac.HmacSHA512Verifier;
+import com.github.toastshaman.dropwizard.auth.jwt.model.JsonWebToken;
 import com.github.toastshaman.dropwizard.auth.jwt.parser.DefaultJsonWebTokenParser;
+import com.google.common.cache.CacheBuilder;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.CachingAuthenticator;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -18,11 +22,12 @@ import jdbi.SettingsDao;
 import jdbi.StockDAO;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.Handle;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
+import java.security.Principal;
 import java.util.EnumSet;
+import java.util.concurrent.TimeUnit;
 
 import static org.eclipse.jetty.servlets.CrossOriginFilter.*;
 
@@ -46,15 +51,15 @@ public class KioskApplication extends Application<KioskConfiguration> {
         LoginDao loginDao = jdbi.onDemand(LoginDao.class);
         SettingsDao settingsDao = jdbi.onDemand(SettingsDao.class);
 
-        environment.jersey().register(new StockResource(stockDAO));
+        environment.jersey().register(new StockResource(stockDAO, purchaseDao, settingsDao));
         environment.jersey().register(new PurchaseResource(purchaseDao, settingsDao));
         environment.jersey().register(new LoginResource(config.getJwtTokenSecret(), loginDao));
 
-        addAuthFilter(environment, config);
+        addAuthFilter(environment, config, loginDao);
 
     }
 
-    private void addAuthFilter(Environment environment, KioskConfiguration configuration) {
+    private void addAuthFilter(Environment environment, KioskConfiguration configuration, LoginDao loginDao) {
         final JsonWebTokenParser tokenParser = new DefaultJsonWebTokenParser();
         final HmacSHA512Verifier tokenVerifier = new HmacSHA512Verifier(configuration.getJwtTokenSecret());
         environment.jersey().register(new AuthDynamicFeature(
@@ -63,7 +68,7 @@ public class KioskApplication extends Application<KioskConfiguration> {
                         .setTokenVerifier(tokenVerifier)
                         .setRealm("realm")
                         .setPrefix("Bearer")
-                        .setAuthenticator(new KioskAuthenticator())
+                        .setAuthenticator(new CachingAuthenticator<>(new MetricRegistry(), new KioskAuthenticator(loginDao), CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES)))
                         .buildAuthFilter()));
     }
 

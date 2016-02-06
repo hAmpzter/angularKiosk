@@ -23,4 +23,6 @@ public interface StockDAO  {
     @Mapper(CategoryMapper.class)
     @SqlQuery("Select distinct ProduktKategori FROM Produkter")
     List<Category> getCategories();
+
+
 }

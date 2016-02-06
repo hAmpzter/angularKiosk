@@ -19,6 +19,7 @@ angular.module('webApp')
       }
       return sum;
     };
+    $scope.allStock = function() {
 
     $http.get('http://localhost:8280/stock').then(
       function successCallback(response) {
@@ -28,7 +29,18 @@ angular.module('webApp')
         console.log('error');
         console.log(response);
       });
+    }
+    $scope.topStock = function() {
 
+    $http.get('http://localhost:8280/stock/top').then(
+      function successCallback(response) {
+        $scope.items=response.data;
+      },
+      function errorCallback(response) {
+        console.log('error');
+        console.log(response);
+      });
+    }
     $scope.addToCart = function(item) {
       console.log('called with: '+item);
         var ean = ''+item.ean;
@@ -100,6 +112,7 @@ angular.module('webApp')
            });
     };
 
+
    $http.get('http://localhost:8280/stock/categories').then(
          function successCallback(response) {
            $scope.categories=response.data;
@@ -119,4 +132,5 @@ angular.module('webApp')
            console.log('error');
            console.log(response);
          });
+   $scope.topStock()
   }]);

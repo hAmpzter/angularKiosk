@@ -36,7 +36,7 @@ public class LoginResource {
             final JsonWebToken token = JsonWebToken.builder()
                     .header(JsonWebTokenHeader.HS512())
                     .claim(JsonWebTokenClaim.builder()
-                            .subject("good-guy")
+                            .subject(user.username+":"+Hasher.hash(user.password))
                             .issuedAt(DateTime.now())
                             .build())
                     .build();

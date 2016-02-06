@@ -1,6 +1,8 @@
 package Resources;
 
+import auth.User;
 import jdbi.PurchaseDao;
+import jdbi.SettingsDao;
 import model.Purchase;
 import model.PurchasedItem;
 
@@ -8,6 +10,8 @@ import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Path("/purchase")
@@ -16,16 +20,16 @@ import java.util.List;
 public class PurchaseResource {
 
     PurchaseDao purchaseDao;
-
-    public PurchaseResource(PurchaseDao purchaseDao) {
+    int lanNumber;
+    public PurchaseResource(PurchaseDao purchaseDao, SettingsDao settingsDao) {
         this.purchaseDao = purchaseDao;
+        lanNumber = settingsDao.getLanNumber();
     }
 
     @POST
     @PermitAll
     public Response purchase(Purchase purchase) {
-
-
+        purchase.items.forEach(item -> purchaseDao.completePurchase(item.ean,new Timestamp(new Date().getTime()),null,lanNumber ));
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -34,8 +38,7 @@ public class PurchaseResource {
     @Path("/history")
     public List<PurchasedItem> getPurchases() {
 
-        return purchaseDao.getPurchaseHistory();
-        //return Lists.newArrayList(new CompletedPurchase(Lists.newArrayList(new PurchasedItem(12, "Cola"), new PurchasedItem(32, "Fanta")), 321));
+        return purchaseDao.getPurchaseHistory(this.lanNumber);
     }
 
     @DELETE

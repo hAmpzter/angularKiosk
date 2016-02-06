@@ -14,6 +14,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import jdbi.LoginDao;
 import jdbi.PurchaseDao;
+import jdbi.SettingsDao;
 import jdbi.StockDAO;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.skife.jdbi.v2.DBI;
@@ -43,9 +44,10 @@ public class KioskApplication extends Application<KioskConfiguration> {
         StockDAO stockDAO = jdbi.onDemand(StockDAO.class);
         PurchaseDao purchaseDao = jdbi.onDemand(PurchaseDao.class);
         LoginDao loginDao = jdbi.onDemand(LoginDao.class);
+        SettingsDao settingsDao = jdbi.onDemand(SettingsDao.class);
 
         environment.jersey().register(new StockResource(stockDAO));
-        environment.jersey().register(new PurchaseResource(purchaseDao));
+        environment.jersey().register(new PurchaseResource(purchaseDao, settingsDao));
         environment.jersey().register(new LoginResource(config.getJwtTokenSecret(), loginDao));
 
         addAuthFilter(environment, config);

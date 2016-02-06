@@ -58,7 +58,15 @@ angular.module('webApp')
     };
 
     $scope.purchase = function() {
-       $http.post('http://localhost:8280/purchase', {items: $scope.cart}).then(
+        var items = [];
+        for (var index in $scope.cart) {
+            var item = $scope.cart[index];
+            for (var i = 0; i < item.count; i++) {
+            console.log('adding item: '+item.item.name+' count: '+item.count);
+            items.push(item.item);
+            }
+        }
+       $http.post('http://localhost:8280/purchase', {items: items}).then(
            function successCallback(response) {
                $scope.cart = [];
                console.log(response);

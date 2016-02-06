@@ -10,6 +10,7 @@
 angular.module('webApp')
   .controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.cart = {};
+    var host = '/'
     $scope.sum = function() {
       var sum =0;
       for (var index in $scope.cart) {
@@ -21,7 +22,7 @@ angular.module('webApp')
     };
     $scope.allStock = function() {
 
-    $http.get('http://localhost:8280/stock').then(
+    $http.get(host+'stock').then(
       function successCallback(response) {
         $scope.items=response.data;
       },
@@ -32,7 +33,7 @@ angular.module('webApp')
     }
     $scope.topStock = function() {
 
-    $http.get('http://localhost:8280/stock/top').then(
+    $http.get(host+'stock/top').then(
       function successCallback(response) {
         $scope.items=response.data;
       },
@@ -59,7 +60,7 @@ angular.module('webApp')
     };
 
     $scope.stockForCategory = function(category) {
-      $http.get('http://localhost:8280/stock/categories/'+category+'/stock').then(
+      $http.get(host+'stock/categories/'+category+'/stock').then(
           function successCallback(response) {
             $scope.items=response.data;
           },
@@ -78,7 +79,7 @@ angular.module('webApp')
             items.push(item.item);
             }
         }
-       $http.post('http://localhost:8280/purchase', {items: items}).then(
+       $http.post(host+'purchase', {items: items}).then(
            function successCallback(response) {
                $scope.cart = [];
                console.log(response);
@@ -89,7 +90,7 @@ angular.module('webApp')
              });
       };
    $scope.removeFromPurchase = function(purchaseId, itemId) {
-       $http.delete('http://localhost:8280/purchase/'+purchaseId+'/'+itemId).then(
+       $http.delete(host+'purchase/'+purchaseId+'/'+itemId).then(
            function successCallback(response) {
                $scope.cart = [];
                console.log(response);
@@ -101,7 +102,7 @@ angular.module('webApp')
       };
 
     $scope.removePurchase = function(purchaseId) {
-     $http.delete('http://localhost:8280/purchase/'+purchaseId).then(
+     $http.delete(host+'purchase/'+purchaseId).then(
          function successCallback(response) {
              $scope.cart = [];
              console.log(response);
@@ -113,7 +114,7 @@ angular.module('webApp')
     };
 
 
-   $http.get('http://localhost:8280/stock/categories').then(
+   $http.get(host+'stock/categories').then(
          function successCallback(response) {
            $scope.categories=response.data;
          },
@@ -123,7 +124,7 @@ angular.module('webApp')
            console.log(response);
          });
 
-   $http.get('http://localhost:8280/purchase/history').then(
+   $http.get(host+'purchase/history').then(
          function successCallback(response) {
            $scope.history=response.data;
          },

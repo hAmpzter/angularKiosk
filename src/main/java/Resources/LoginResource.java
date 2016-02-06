@@ -30,7 +30,7 @@ public class LoginResource {
 
     @POST
     public Response login(LoginUser user) {
-
+        System.out.println("trying login for user:"+user.username);
         if (user.username.equals(loginDao.login(user.username, Hasher.hash(user.password)))) {
             final HmacSHA512Signer signer = new HmacSHA512Signer(tokenSecret);
             final JsonWebToken token = JsonWebToken.builder()
@@ -41,8 +41,10 @@ public class LoginResource {
                             .build())
                     .build();
             final String signedToken = signer.sign(token);
+            System.out.println("login successfull for "+user.username);
             return Response.ok(new User(user.username,signedToken)).header("jwtToken", signedToken).build();
         }
+        System.out.println("login failed for "+user.username);
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 }

@@ -1,22 +1,19 @@
 <div class="row">
-  <div class="col-md-4">
-    <span> <button class="btn btn-default btn-lg btn-block" ng-click="topStock()">Top</button></span>
-    <span> <button class="btn btn-default btn-lg btn-block" ng-click="allStock()">Allt</button></span>
-      <span ng-repeat="category in categories">
-         <button class="btn btn-default btn-lg btn-block" ng-click="stockForCategory('{{category.name}}')">
-           {{category.name}}
-         </button>
-        </span>
+  <div class="col-md-3">
+    <button class="btn btn-primary btn-lg btn-block" ng-click="topStock()">Top</button>
+    <button class="btn btn-primary btn-lg btn-block" ng-click="allStock()">Allt</button>
+
+    <button ng-repeat="category in categories" class="btn btn-default btn-lg btn-block"
+            ng-click="stockForCategory('{{category.name}}')">
+      {{category.name}}
+    </button>
   </div>
   <div class="col-md-4">
-    items
-
-    <span ng-repeat="item in items">
-      <button class="btn btn-default btn-lg btn-block" ng-click="addToCart({{item}})">{{item.name}}</button>
-    </span>
-
+    <button ng-repeat="item in items" class="btn btn-info btn-lg btn-block" ng-click="addToCart({{item}})">
+      {{item.name}}
+    </button>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-5">
     <div class="row">
       <h1 class="text-right">{{ sum() }} KR</h1>
     </div>
@@ -24,31 +21,28 @@
       <table class="table">
         <tr ng-repeat="(key,cartItem) in cart">
           <td>{{cartItem.item.name}}</td>
-          <td><button class="btn btn-danger" ng-click="decreaseItemCount({{cartItem.item.ean}})">-</button></td>
+          <td>
+            <button class="btn btn-danger" ng-click="decreaseItemCount({{cartItem.item.ean}})">-</button>
+          </td>
           <td>{{cartItem.count}}</td>
-          <td><button class="btn btn-success" ng-click="increaseItemCount({{cartItem.item.ean}})">+</button></td>
+          <td>
+            <button class="btn btn-success" ng-click="increaseItemCount({{cartItem.item.ean}})">+</button>
+          </td>
         </tr>
       </table>
 
     </div>
     <div class="row">
-      <button class="btn btn-success" ng-click="purchase()">Slutför köp</button>
+      <button class="btn btn-success pull-right" ng-click="purchase()">Slutför köp</button>
     </div>
-
+    <br>
+    <div class="panel panel-default">
+      <div class="panel-heading">History</div>
+      <div class="panel-body" ng-repeat="purchase in history">
+     <span>{{purchase.name}}  - <a id="delete" href
+                                                              ng-click="removeFromPurchase(purchase.purchaseId,purchase.itemPurchaseId)">remove</a> </span><br>
+        </span>
+      </div>
+    </div>
   </div>
 </div>
-
-
-history:
-<ul>
-  <div ng-repeat="purchase in history">
-    <div>
-      <span> {{purchase.purchaseId}} - {{purchase.name}}  - <a id="delete" href
-                                                               ng-click="removeFromPurchase(purchase.purchaseId,purchase.itemPurchaseId)">remove</a> </span><br>
-      </span>
-      <!--<a id="delete" href ng-click="removePurchase(purchase.purchaseId)">delete entire purchase</a>-->
-    </div>
-  </div>
-
-</ul>
-

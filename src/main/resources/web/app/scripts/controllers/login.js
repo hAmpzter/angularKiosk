@@ -22,7 +22,7 @@ angular.module('webApp')
     $scope.login = [];
     $scope.loginAlertMessage = '';
     $scope.doLogin = function() {
-        $http.post('/login', {username: $scope.username, password: $scope.password}).then(
+        $http.post('http://localhost:8280/login', {username: $scope.username, password: $scope.password}).then(
                  function successCallback(response) {
                      store.set('jwt', response.data.token);
                      $location.path('/');

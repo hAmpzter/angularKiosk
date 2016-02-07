@@ -10,7 +10,7 @@
 angular.module('webApp')
   .controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.cart = {};
-    var host = '/'
+    var host = 'http://localhost:8280/';
     $scope.sum = function() {
       var sum =0;
       for (var index in $scope.cart) {
@@ -30,7 +30,7 @@ angular.module('webApp')
         console.log('error');
         console.log(response);
       });
-    }
+    };
     $scope.topStock = function() {
 
     $http.get(host+'stock/top').then(
@@ -41,7 +41,7 @@ angular.module('webApp')
         console.log('error');
         console.log(response);
       });
-    }
+    };
     $scope.addToCart = function(item) {
       console.log('called with: '+item);
         var ean = ''+item.ean;
@@ -133,5 +133,5 @@ angular.module('webApp')
            console.log('error');
            console.log(response);
          });
-   $scope.topStock()
+   $scope.topStock();
   }]);

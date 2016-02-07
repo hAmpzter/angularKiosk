@@ -3,46 +3,50 @@
     <button class="btn btn-primary btn-lg btn-block" ng-click="topStock()">Top</button>
     <button class="btn btn-primary btn-lg btn-block" ng-click="allStock()">Allt</button>
 
-    <button ng-repeat="category in categories" class="btn btn-default btn-lg btn-block"
+    <button ng-repeat="category in categories"  class="btn btn-info btn-lg btn-block"
             ng-click="stockForCategory('{{category.name}}')">
       {{category.name}}
     </button>
   </div>
   <div class="col-md-4">
-    <button ng-repeat="item in items" class="btn btn-info btn-lg btn-block" ng-click="addToCart({{item}})">
-      {{item.name}}
+    <span >
+    <button ng-repeat="item in items" class="btn btn-default btn-lg btn-block btn-xs" ng-click="addToCart({{item}})">
+      <h5>{{item.name}}</h5>
     </button>
+      </span>
   </div>
   <div class="col-md-5">
-    <div class="row">
-      <h1 class="text-right">{{ sum() }} KR</h1>
-    </div>
-    <div class="row">
-      <table class="table">
-        <tr ng-repeat="(key,cartItem) in cart">
-          <td>{{cartItem.item.name}}</td>
-          <td>
-            <button class="btn btn-danger" ng-click="decreaseItemCount({{cartItem.item.ean}})">-</button>
-          </td>
-          <td>{{cartItem.count}}</td>
-          <td>
-            <button class="btn btn-success" ng-click="increaseItemCount({{cartItem.item.ean}})">+</button>
-          </td>
-        </tr>
-      </table>
+    <div class="panel panel-default">
+      <div class="panel-heading">Kundkorg</div>
+      <div class="panel-body">
 
+        <div class="row">
+          <h1 class="text-right">{{ sum() }} KR&nbsp;&nbsp;&nbsp;</h1>
+        </div>
+
+        <table class="table">
+          <tr class="animate-show" ng-repeat="cartItem in cart | orderBy:'-position'" ng-show="cartItem.count > 0">
+            <td>{{cartItem.item.name}}</td>
+            <td><button class="btn btn-danger" ng-click="decreaseItemCount({{cartItem.item.ean}})">-</button></td>
+            <td>{{cartItem.count}}</td>
+            <td><button class="btn btn-success" ng-click="increaseItemCount({{cartItem.item.ean}})">+</button></td>
+          </tr>
+        </table>
+      </div>
+      <div class="panel-footer"><button class="btn btn-success" ng-click="purchase()">Slutför köp</button></div>
     </div>
-    <div class="row">
-      <button class="btn btn-success pull-right" ng-click="purchase()">Slutför köp</button>
-    </div>
+
     <br>
     <div class="panel panel-default">
       <div class="panel-heading">History</div>
-      <div class="panel-body" ng-repeat="purchase in history">
-     <span>{{purchase.name}}  - <a id="delete" href
-                                                              ng-click="removeFromPurchase(purchase.purchaseId,purchase.itemPurchaseId)">remove</a> </span><br>
+      <div class="panel-body">
+        <span ng-repeat="purchase in history">
+          {{purchase.name}} - <a id="delete" href ng-click="removeFromPurchase(purchase.purchaseId,purchase.itemPurchaseId)">remove</a><br/>
         </span>
       </div>
     </div>
   </div>
+
+  <a href ng-click="logout()">logout</a>
 </div>
+

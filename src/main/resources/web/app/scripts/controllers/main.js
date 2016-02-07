@@ -8,9 +8,9 @@
  * Controller of the webApp
  */
 angular.module('webApp')
-  .controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
-    $scope.cart = {};
-    var host = 'http://localhost:8280/';
+  .controller('MainCtrl', ['$scope', '$http','store', function($scope, $http, store) {
+    $scope.cart = [];
+    var host = '/';
     $scope.sum = function() {
       var sum =0;
       for (var index in $scope.cart) {
@@ -43,20 +43,32 @@ angular.module('webApp')
       });
     };
     $scope.addToCart = function(item) {
-      console.log('called with: '+item);
-        var ean = ''+item.ean;
-        if($scope.cart[ean]) {
-          $scope.cart[ean].count++;
+        var cartItem = findItemInCart(item.ean);
+        if(cartItem === null) {
+          $scope.cart.push({item: item, count: 1, position: Object.keys($scope.cart).length});
         } else {
-          $scope.cart[ean]= {item: item, count: 1};
+          cartItem.count++;
         }
     };
 
-    $scope.increaseItemCount = function(ean) {
-      $scope.cart[ean].count++;
+    var findItemInCart = function(ean) {
+      for (var i = 0; i < $scope.cart.length; i++) {
+        var cartItem = $scope.cart[i];
+        if(cartItem.item.ean === ean.toString()) {
+          return cartItem;
+        }
+      }
+      return null;
     };
-        $scope.decreaseItemCount = function(ean) {
-      $scope.cart[ean].count--;
+
+    $scope.increaseItemCount = function(ean) {
+         findItemInCart(ean).count++;
+    };
+    $scope.decreaseItemCount = function(ean) {
+        var item = findItemInCart(ean);
+        if(item.count>0) {
+          item.count--;
+        }
     };
 
     $scope.stockForCategory = function(category) {
@@ -82,6 +94,7 @@ angular.module('webApp')
        $http.post(host+'purchase', {items: items}).then(
            function successCallback(response) {
                $scope.cart = [];
+               $scope.showHistory();
                console.log(response);
              },
              function errorCallback(response) {
@@ -124,14 +137,23 @@ angular.module('webApp')
            console.log(response);
          });
 
+   $scope.showHistory = function() {
    $http.get(host+'purchase/history').then(
-         function successCallback(response) {
-           $scope.history=response.data;
-         },
-         function errorCallback(response) {
-           $scope.history=[];
-           console.log('error');
-           console.log(response);
-         });
+            function successCallback(response) {
+              $scope.history=response.data;
+            },
+            function errorCallback(response) {
+              $scope.history=[];
+              console.log('error');
+              console.log(response);
+            });
+   };
+
+   $scope.logout = function() {
+    store.remove('jwt');
+    location.reload();
+   };
+
    $scope.topStock();
+   $scope.showHistory();
   }]);
